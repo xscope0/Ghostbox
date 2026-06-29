@@ -1,0 +1,164 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TempMail Agent API",
+    "version": "1.0.0",
+    "description": "Programmatic API for disposable email operations. Available via URL parameters or JavaScript API (window.TempMailAPI)."
+  },
+  "servers": [
+    {
+      "url": "https://xscope0.vercel.app"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "generateInbox",
+        "summary": "Generate a new temporary inbox",
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "enum": ["generate"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generated inbox address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "address": { "type": "string" },
+                    "domain": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/?api=messages&address={address}": {
+      "get": {
+        "operationId": "getMessages",
+        "summary": "Fetch messages for an inbox",
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "enum": ["messages"] }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of messages"
+          }
+        }
+      }
+    },
+    "/?api=otp&address={address}": {
+      "get": {
+        "operationId": "extractOTP",
+        "summary": "Extract OTP/verification code from messages",
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "enum": ["otp"] }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Extracted OTP code"
+          }
+        }
+      }
+    },
+    "/?api=wait&address={address}&t={timeout}": {
+      "get": {
+        "operationId": "waitForOTP",
+        "summary": "Wait for OTP with timeout (long-poll)",
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "enum": ["wait"] }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "t",
+            "in": "query",
+            "description": "Timeout in seconds",
+            "schema": { "type": "integer", "default": 60 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OTP code when received, or timeout"
+          }
+        }
+      }
+    },
+    "/?api=inboxes": {
+      "get": {
+        "operationId": "listInboxes",
+        "summary": "List all inboxes for current session",
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "enum": ["inboxes"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of inbox addresses"
+          }
+        }
+      }
+    },
+    "/?api=domains": {
+      "get": {
+        "operationId": "listDomains",
+        "summary": "List available email domains",
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "enum": ["domains"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of domain objects"
+          }
+        }
+      }
+    }
+  }
+}

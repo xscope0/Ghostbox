@@ -1,0 +1,20 @@
+{
+  "name": "temp-mail",
+  "version": "1.0.0",
+  "description": "Disposable email service with OTP extraction and agent API",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/otp.test.mjs",
+    "dev": "npx serve .",
+    "start": "npx serve . -l 3000"
+  },
+  "keywords": [
+    "temp-mail",
+    "disposable-email",
+    "otp",
+    "verification",
+    "agent-api"
+  ],
+  "author": "xscope0",
+  "license": "MIT"
+}
